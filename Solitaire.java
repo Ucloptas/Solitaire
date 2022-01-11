@@ -106,37 +106,38 @@ public class Solitaire {
         printBoard(stackDiscard, one, two, three, four, five, six, seven, oneshow, twoshow, threeshow, fourshow, fiveshow, sixshow, sevenshow);
         
         int take = 0;
+        int takeAmount=0;
         int place = 0;
         
         
         while(winner){
-            if(stackDiscard.size()==0&&stack.size()==0)
+            if(stackDiscard.isEmpty()&&stack.isEmpty())
                 winner=false;
-            if(one.size()==13){ //clear if full
+            if(one.size()>=13){ //clear if full
                 one.clear();
                 oneshow = 0;
             }
-            if(two.size()==13){
+            if(two.size()>=13){
                 two.clear();
                 twoshow = 0;
             }
-            if(three.size()==13){
+            if(three.size()>=13){
                 three.clear();
                 threeshow = 0;
             }
-            if(four.size()==13){
+            if(four.size()>=13){
                 four.clear();
                 fourshow = 0;
             }
-            if(five.size()==13){
+            if(five.size()>=13){
                 five.clear();
                 fiveshow = 0;
             }
-            if(six.size()==13){
+            if(six.size()>=13){
                 six.clear();
                 sixshow = 0;
             }
-            if(seven.size()==13){
+            if(seven.size()>=13){
                 seven.clear();
                 sevenshow = 0;
             }
@@ -144,7 +145,7 @@ public class Solitaire {
             System.out.println("\n\n(0) = The stack\n(1-7) = the board\n(8) = draw three more cards\nplease select to draw or take: ");
             take = scan.nextInt();//option
             while(take>8||take<0){//out of bounds catch
-                System.out.println("Please enter a number that is 0-8:");
+                System.out.println("Please enter an option that is 0-8:");
                 take = scan.nextInt();
             }
             while(stackDiscard.size()==0&&take==0){//try to take from empty discard catcher
@@ -152,6 +153,43 @@ public class Solitaire {
                 take = scan.nextInt();
             }
             if(take<=7&&take>=0){//if simple take and place
+                if(take==0){
+                    takeAmount=1;
+                }
+                else{//engine to check if you can take amount of cards from a stack
+                    System.out.println("How many cards do you want to move from this pile?");
+                    takeAmount=scan.nextInt();
+                    while(take==1&&takeAmount>oneshow) {
+                        System.out.println("You can only move up to "+oneshow+" cards from this pile; please choose a valid amount (0-"+oneshow+"):");
+                        takeAmount=scan.nextInt();
+                    }  
+                    while(take==2&&takeAmount>twoshow) {
+                        System.out.println("You can only move up to "+twoshow+" cards from this pile; please choose a valid amount (0-"+twoshow+"):");
+                        takeAmount=scan.nextInt();
+                    }
+                    while(take==3&&takeAmount>threeshow) {
+                        System.out.println("You can only move up to "+threeshow+" cards from this pile; please choose a valid amount (0-"+threeshow+"):");
+                        takeAmount=scan.nextInt();
+                    }
+                    while(take==4&&takeAmount>fourshow) {
+                        System.out.println("You can only move up to "+fourshow+" cards from this pile; please choose a valid amount (0-"+fourshow+"):");
+                        takeAmount=scan.nextInt();
+                    }
+                    while(take==5&&takeAmount>fiveshow) {
+                        System.out.println("You can only move up to "+fiveshow+" cards from this pile; please choose a valid amount (0-"+fiveshow+"):");
+                        takeAmount=scan.nextInt();
+                    }
+                    while(take==6&&takeAmount>sixshow) {
+                        System.out.println("You can only move up to "+sixshow+" cards from this pile; please choose a valid amount (0-"+sixshow+"):");
+                        takeAmount=scan.nextInt();
+                    }
+                    while(take==7&&takeAmount>sevenshow) {
+                        System.out.println("You can only move up to "+sevenshow+" cards from this pile; please choose a valid amount (0-"+sevenshow+"):");
+                        takeAmount=scan.nextInt();
+                    }
+                }
+                
+                
                 System.out.println("Please enter what pile (1-7) you want to move to: ");
                 place = scan.nextInt();
                 while(place>7||place<1){
@@ -183,56 +221,56 @@ public class Solitaire {
         System.out.println();
         tempStack.clear();
         Card temp = new Card();
-        if(isLegal(stackDiscard, one, two, three, four, five, six, seven, take, place, oneshow, twoshow, threeshow, fourshow, fiveshow, sixshow, sevenshow)&&take!=8){//move the cards
+        if(isLegal(stackDiscard, one, two, three, four, five, six, seven, take, place, takeAmount)&&take!=8){//move the cards
             switch(take){
                 case 0:
                     tempStack.add(stackDiscard.get(stackDiscard.size()-1));
                     stackDiscard.remove(stackDiscard.size()-1);
                     break;
                 case 1:
-                    for(int a = oneshow;a>0;a--){
+                    for(int a = takeAmount;a>0;a--){
                     tempStack.add(one.get(one.size()-1));
                     one.remove(one.size()-1);
                     }
                     oneshow=1;
                     break;
                 case 2:
-                    for(int a = twoshow;a>0;a--){
+                    for(int a = takeAmount;a>0;a--){
                     tempStack.add(two.get(two.size()-1));
                     two.remove(two.size()-1);
                     }
                     twoshow=1;
                     break;
                 case 3:
-                    for(int a = threeshow;a>0;a--){
+                    for(int a = takeAmount;a>0;a--){
                     tempStack.add(three.get(three.size()-1));
                     three.remove(three.size()-1);
                     }
                     threeshow=1;
                     break;
                 case 4:
-                    for(int a = fourshow;a>0;a--){
+                    for(int a = takeAmount;a>0;a--){
                     tempStack.add(four.get(four.size()-1));
                     four.remove(four.size()-1);
                     }
                     fourshow=1;
                     break;
                 case 5:
-                    for(int a = fiveshow;a>0;a--){
+                    for(int a = takeAmount;a>0;a--){
                     tempStack.add(five.get(five.size()-1));
                     five.remove(five.size()-1);
                     }
                     fiveshow=1;
                     break;
                 case 6:
-                    for(int a = sixshow;a>0;a--){
+                    for(int a = takeAmount;a>0;a--){
                     tempStack.add(six.get(six.size()-1));
                     six.remove(six.size()-1);
                     }
                     sixshow=1;
                     break;
                 case 7:
-                    for(int a = sevenshow;a>0;a--){
+                    for(int a = takeAmount;a>0;a--){
                     tempStack.add(seven.get(seven.size()-1));
                     seven.remove(seven.size()-1);
                     }
@@ -288,7 +326,7 @@ public class Solitaire {
             tempStack.clear();
         }
         else{
-            if(take!=8&&!isLegal(stackDiscard, one, two, three, four, five, six, seven, take, place, oneshow, twoshow, threeshow, fourshow, fiveshow, sixshow, sevenshow))
+            if(take!=8&&!isLegal(stackDiscard, one, two, three, four, five, six, seven, take, place, takeAmount))
             System.out.println("\nThat is an illegal move");
             
         }
@@ -299,11 +337,11 @@ public class Solitaire {
     }
         
         
-        while(true){
+        for(int a = 0; a<200; a++){
             
             System.out.println("YOU WON!! \n    YOU WON!! \n        YOU WON!!\n    YOU WON!!");
         }
-        
+        System.out.println("YOU WON!!");
         
         
         
@@ -311,7 +349,7 @@ public class Solitaire {
     }
     public static boolean isLegal(ArrayList<Card> stackDiscard, ArrayList<Card> one, ArrayList<Card> two, ArrayList<Card> three, 
             ArrayList<Card> four, ArrayList<Card> five, ArrayList<Card> six, ArrayList<Card> seven, int take, int place,
-            int oneshow, int twoshow, int threeshow, int fourshow, int fiveshow, int sixshow, int sevenshow){
+            int takeAmount){
         if(take==8)
             return false;
         Card tempTake = new Card();
@@ -322,61 +360,75 @@ public class Solitaire {
                 tempTake = stackDiscard.get(stackDiscard.size()-1);
                 break;
             case 1:
-                tempTake= one.get(one.size()-oneshow);
+                tempTake= one.get(one.size()-takeAmount);
                 break;
             case 2:
-                tempTake= two.get(two.size()-twoshow);
+                tempTake= two.get(two.size()-takeAmount);
                 break;
             case 3:
-                tempTake= three.get(three.size()-threeshow);
+                tempTake= three.get(three.size()-takeAmount);
                 break;
             case 4:
-                tempTake= four.get(four.size()-fourshow);
+                tempTake= four.get(four.size()-takeAmount);
                 break;
             case 5:
-                tempTake= five.get(five.size()-fiveshow);
+                tempTake= five.get(five.size()-takeAmount);
                 break;
             case 6:
-                tempTake= six.get(six.size()-sixshow);
+                tempTake= six.get(six.size()-takeAmount);
                 break;
             case 7:
-                tempTake= seven.get(seven.size()-sevenshow);
+                tempTake= seven.get(seven.size()-takeAmount);
                 break;
         }
         switch(place){
             case 1:
                 if(one.size()==0&&tempTake.getVal()==13)
                     return true;
+                else if(one.size()==0)
+                    return false;
                 tempPlace= one.get(one.size()-1);
                 break;
             case 2:
                 if(two.size()==0&&tempTake.getVal()==13)
                     return true;
+                else if(two.size()==0)
+                    return false;
                 tempPlace= two.get(two.size()-1);
                 break;
             case 3:
                 if(three.size()==0&&tempTake.getVal()==13)
                     return true;
+                else if(three.size()==0)
+                    return false;
                 tempPlace= three.get(three.size()-1);
                 break;
             case 4:
                 if(four.size()==0&&tempTake.getVal()==13)
                     return true;
+                else if(four.size()==0)
+                    return false;
                 tempPlace= four.get(four.size()-1);
                 break;
             case 5:
                 if(five.size()==0&&tempTake.getVal()==13)
                     return true;
+                else if(five.size()==0)
+                    return false;
                 tempPlace= five.get(five.size()-1);
                 break;
             case 6:
                 if(six.size()==0&&tempTake.getVal()==13)
                     return true;
+                else if(six.size()==0)
+                    return false;
                 tempPlace= six.get(six.size()-1);
                 break;
             case 7:
                 if(seven.size()==0&&tempTake.getVal()==13)
                     return true;
+                else if(seven.size()==0)
+                    return false;
                 tempPlace= seven.get(seven.size()-1);
                 break;
         }
@@ -403,7 +455,7 @@ public class Solitaire {
             ArrayList<Card> four, ArrayList<Card> five, ArrayList<Card> six, ArrayList<Card> seven, 
             int oneshow, int twoshow, int threeshow, int fourshow, int fiveshow, int sixshow, int sevenshow){
         
-        for(int a = 0; a<10; a++){
+        for(int a = 0; a<14; a++){
             if(one.size()-oneshow>a)
                 System.out.print("- - - - -  ");
             else if(one.size()-1<a)
@@ -456,7 +508,7 @@ public class Solitaire {
             
         }
         if(stackDiscard.size()!=0)
-        System.out.print(stackDiscard.get(stackDiscard.size()-1).getColor()+" "+stackDiscard.get(stackDiscard.size()-1).getVal()+"  ");
+        System.out.println(stackDiscard.get(stackDiscard.size()-1).getColor()+" "+stackDiscard.get(stackDiscard.size()-1).getVal()+"  ");
         else
             System.out.println("- - - - ");
     }
